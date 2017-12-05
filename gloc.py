@@ -9,17 +9,19 @@ import json
 
 def convert(method,input_file,output_file):
     print("Geolocating list of ip adresses... Could take a while (depending on the size of INPUTFILE)")
-
+    converted = []
     with open(input_file,"r") as f:
         with open(output_file,"w") as o:
             for line in f:
                 result = urllib.request.urlopen(fgurl+method+line).read()
                 if method == "json/":
                     wdata = json.loads(result.decode('utf-8'))
-                    o.write(str(wdata) + "\n")
+                    converted.append(wdata)
                 else:
                     o.write(str(result.rstrip()).lstrip('b') + "\n")
-                    pass
+                    pass      
+            if method == "json/":
+                json.dump(converted,o)
         o.close()
     f.close()
     sys.exit()
