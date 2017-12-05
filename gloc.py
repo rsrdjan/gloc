@@ -56,12 +56,12 @@ elif output_file != None:
     sys.exit()
 else:
     try:
-        result = urllib.request.urlopen(req)
+        result = urllib.request.urlopen(req).read()
     except urllib.error.HTTPError as e:
         print(e.reason)
         sys.exit()
 
-    rez = json.load(result)
+    rez = json.loads(result.decode('utf-8'))
 
     print("\nGeolocation results")
     print("==============================================")
