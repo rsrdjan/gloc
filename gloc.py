@@ -7,15 +7,15 @@ import sys
 import json
 
 
-def convert(ip,req,method,input_file,output_file):
+def convert(method,input_file,output_file):
     print("Geolocating list of ip adresses... Could take a while (depending on the size of INPUTFILE)")
 
     with open(input_file,"r") as f:
         with open(output_file,"w") as o:
             for line in f:
-                result = urllib.request.urlopen(req).read()
+                result = urllib.request.urlopen(fgurl+method+line).read()
                 if method == "json/":
-                    wdata = json.loads(result)
+                    wdata = json.loads(result.decode('utf-8'))
                     o.write(str(wdata) + "\n")
                 else:
                     o.write(str(result.rstrip()).lstrip('b') + "\n")
@@ -47,7 +47,7 @@ ip = args.ip
 req = fgurl + method + ip
 
 if input_file != None and output_file != None:
-    convert(ip,req,method,input_file,output_file)
+    convert(method,input_file,output_file)
 elif input_file != None:
     print("Missing OUTFILE to write to. Exiting...")
     sys.exit()
